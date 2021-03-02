@@ -2,7 +2,7 @@
 import Chat from "./components/chats/Chat";
 import Login from "./components/login/Login";
 import Header from "./components/header/Header";
-import Sidebar from "./components/sidebar/sidebar";
+import Sidebar from "./components/sidebar/Sidebar";
 // Packages
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import styled from "styled-components";
