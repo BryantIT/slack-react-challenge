@@ -32,6 +32,18 @@ function Sidebar() {
     margin-right: 20px;
     cursor: pointer;
   `
+  const MainChannels = styled.div`
+
+  `
+  const MainChannelItem = styled.div`
+    color: rgb(188,171,188);
+    display: grid;
+    grid-template-columns: 15% auto;
+    height: 28px;
+    align-items: center;
+    padding-left: 19px;
+    cursor: pointer;
+  `
   return (
     <Container>
       <WorkSpaceContainer>
@@ -42,6 +54,11 @@ function Sidebar() {
           <AddCircleOutlineIcon />
         </NewMessage>
       </WorkSpaceContainer>
+      <MainChannels>
+        <MainChannelItem>
+
+        </MainChannelItem>
+      </MainChannels>
     </Container>
   )
 }
