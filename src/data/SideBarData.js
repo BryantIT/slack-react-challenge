@@ -32,3 +32,24 @@ export const sidebarItems = [
     text: "More"
   }
 ]
+
+export const channelItems = [
+  {
+    name: "General"
+  },
+  {
+    name: "Make Money"
+  },
+  {
+    name: "Education"
+  },
+  {
+    name: "Pair Programming"
+  },
+  {
+    name: "Projects"
+  },
+  {
+    name: "Meme Space"
+  }
+]
