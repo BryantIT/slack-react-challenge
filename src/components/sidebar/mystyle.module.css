@@ -1,0 +1,7 @@
+.add {
+    cursor: pointer;
+}
+
+.add:hover {
+    background: #350d36
+}

@@ -1,10 +1,13 @@
-import { React } from 'react'
+import { React, useEffect, useState } from 'react'
 import styled from 'styled-components'
 // MaterialUI
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import AddIcon from '@material-ui/icons/Add';
+import styles from './mystyle.module.css'
+// Firebase
+import db from '../../firebase'
 // Test Data
-import { sidebarItems, channelItems } from '../../data/SideBarData'
+import { sidebarItems } from '../../data/SideBarData'
 
 // Styling
 const Container = styled.div`
@@ -76,8 +79,28 @@ cursor: pointer;
 }
 `
 
+
 //Component
-function Sidebar() {
+function Sidebar(props) {
+  const [channels, setChannels] = useState([])
+
+  const addChannel = () => {
+    const promptName = prompt('Enter Channel Name')
+    if(promptName){
+      db.collection('rooms').add({
+        name: promptName
+      })
+    }
+  }
+
+  useEffect(() => {
+    if(props){
+      setChannels(props.channels)
+    }
+  }, [props])
+
+  console.log(channels, 'In chat')
+
   return (
     <Container>
       <WorkSpaceContainer>
@@ -103,12 +126,12 @@ function Sidebar() {
           <div>
             Channels
           </div>
-          <AddIcon />
+          <AddIcon onClick={addChannel} className={styles.add} />
         </NewChannelContainer>
         <ChannelsList>
           {
-            channelItems.map(item => (
-              <Channel>
+            channels.map(item => (
+              <Channel id={item.id}>
                 # {item.name}
               </Channel>
             ))

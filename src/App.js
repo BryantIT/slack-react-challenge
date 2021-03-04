@@ -46,7 +46,7 @@ function App() {
         <Container>
           <Header />
           <Main>
-            <Sidebar />
+            <Sidebar channels={channels} />
             <Switch>
               <Route path="/room">
                 <Chat />
