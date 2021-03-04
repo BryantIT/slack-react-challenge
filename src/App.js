@@ -1,3 +1,4 @@
+import { React, useEffect, useState } from 'react'
 // Components
 import Chat from "./components/chats/Chat";
 import Login from "./components/login/Login";
@@ -25,14 +26,19 @@ grid-template-rows: 50px auto;
 // Component
 function App() {
 
+  const [channels, setChannels] = useState([])
+
   const getChannels = () => {
     db.collection('rooms').onSnapshot((snapshot) => {
-      console.log(snapshot.docs)
-    })
+      setChannels(snapshot.docs.map((doc) => {
+        return { id: doc.id, name: doc.data().name }
+      }))
+      })
   }
 
-  getChannels()
-
+  useEffect(() => {
+    getChannels()
+  }, [])
 
   return (
     <div className="App">
