@@ -1,9 +1,17 @@
-import { React, useEffect, useState } from 'react'
+import { React, useEffect, useState, Fragment } from 'react'
 import styled from 'styled-components'
+import Chat from '../chats/Chat'
 // MaterialUI
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import AddIcon from '@material-ui/icons/Add';
 import styles from './mystyle.module.css'
+import Button from '@material-ui/core/Button'
+import Dialog from '@material-ui/core/Dialog'
+import DialogActions from '@material-ui/core/DialogActions'
+import DialogContent from '@material-ui/core/DialogContent'
+import DialogContentText from '@material-ui/core/DialogContentText'
+import DialogTitle from '@material-ui/core/DialogTitle'
+import TextField from '@material-ui/core/TextField'
 // Firebase
 import db from '../../firebase'
 // Test Data
@@ -81,17 +89,48 @@ cursor: pointer;
 
 
 //Component
-function Sidebar(props) {
+function Sidebar(props, {  dialogOpen, close  }) {
   const [channels, setChannels] = useState([])
+  const [channelName, setChannelName] = useState('')
+  const [open, setOpen] = useState(false)
+  const [inputChannelName, setInputChannelName] = useState('')
+  const [inputChannelDescription, setInputChannelDescription] = useState('')
 
-  const addChannel = () => {
-    const promptName = prompt('Enter Channel Name')
-    if(promptName){
+  const handleAddChannel = () => {
+    const name = inputChannelName
+    const desc = inputChannelDescription
+    if(name && desc){
       db.collection('rooms').add({
-        name: promptName
+        name: name,
+        description: desc
       })
     }
+    setInputChannelName('')
+    setInputChannelDescription('')
+    setOpen(false)
   }
+
+  const handleNewChannelName = (event) => {
+    const name = event.target.value
+    setInputChannelName(name)
+  }
+
+  const handleNewChannelDescription = (event) => {
+    const desc = event.target.value
+    setInputChannelDescription(desc)
+  }
+
+  const handleDialogClose = () => {
+    setOpen(false)
+  }
+
+  const handleDialogOpen = () => {
+    setOpen(true)
+  }
+
+  useEffect(() => {
+    setOpen(dialogOpen)
+  }, [dialogOpen])
 
   useEffect(() => {
     if(props){
@@ -99,47 +138,85 @@ function Sidebar(props) {
     }
   }, [props])
 
-  console.log(channels, 'In chat')
-
   return (
-    <Container>
-      <WorkSpaceContainer>
-        <Name>
-          CodeNinja
-        </Name>
-        <NewMessage>
-          <AddCircleOutlineIcon />
-        </NewMessage>
-      </WorkSpaceContainer>
-      <MainChannels>
-        {
-          sidebarItems.map(item => (
-            <MainChannelItem>
-              {item.icon}
-              {item.text}
-            </MainChannelItem>
-          ))
-        }
-      </MainChannels>
-      <ChannelsContainer>
-        <NewChannelContainer>
-          <div>
-            Channels
-          </div>
-          <AddIcon onClick={addChannel} className={styles.add} />
-        </NewChannelContainer>
-        <ChannelsList>
+    <Fragment>
+      <Dialog open={open} onClose={handleDialogClose} aria-labelledby="form-dialog-title">
+        <DialogTitle id="form-dialog-title">Create Channel</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Please add a channel name and description
+          </DialogContentText>
+          <TextField
+            autoFocus
+            value={inputChannelName}
+            onChange={handleNewChannelName}
+            margin="dense"
+            id="name"
+            label="Channel Name"
+            type="text"
+            fullWidth
+          />
+          <TextField
+            value={inputChannelDescription}
+            onChange={handleNewChannelDescription}
+            margin="dense"
+            id="name"
+            label="Channel Description"
+            type="text"
+            fullWidth
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleDialogClose} color="primary">
+            Cancel
+          </Button>
+          <Button onClick={handleAddChannel} color="primary">
+            Submit
+          </Button>
+        </DialogActions>
+      </Dialog>
+      <Container>
+        <WorkSpaceContainer>
+          <Name>
+            CodeNinja
+          </Name>
+          <NewMessage>
+            <AddCircleOutlineIcon />
+          </NewMessage>
+        </WorkSpaceContainer>
+        <MainChannels>
           {
-            channels.map(item => (
-              <Channel id={item.id}>
-                # {item.name}
-              </Channel>
+            sidebarItems.map(item => (
+              <MainChannelItem>
+                {item.icon}
+                {item.text}
+              </MainChannelItem>
             ))
           }
-        </ChannelsList>
+        </MainChannels>
+        <ChannelsContainer>
+          <NewChannelContainer>
+            <div>
+              Channels
+            </div>
+            <AddIcon onClick={handleDialogOpen} className={styles.add} />
+          </NewChannelContainer>
+          <ChannelsList>
+            {
+              channels.map(item => (
+                <Channel id={item.id} onClick={(() => {
+                  setChannelName(item.name)
+                })}>
+                  # {item.name}
+                </Channel>
+              ))
+            }
+          </ChannelsList>
 
-      </ChannelsContainer>
-    </Container>
+        </ChannelsContainer>
+      </Container>
+      <Chat name={channelName} />
+    </Fragment>
   )
 }
 
