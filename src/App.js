@@ -20,7 +20,7 @@ const Container = styled.div`
 width: 100%;
 height: 100vh;
 display: grid;
-grid-template-rows: 50px auto;
+grid-template-rows: 50px minmax(0, 1fr);
 `
 
 // Component
@@ -31,7 +31,11 @@ function App() {
   const getChannels = () => {
     db.collection('rooms').onSnapshot((snapshot) => {
       setChannels(snapshot.docs.map((doc) => {
-        return { id: doc.id, name: doc.data().name }
+        return {
+          id: doc.id,
+          name: doc.data().name,
+          description: doc.data().description
+        }
       }))
       })
   }
@@ -48,10 +52,7 @@ function App() {
           <Main>
             <Sidebar channels={channels} />
             <Switch>
-              <Route path="/room">
-                <Chat />
-              </Route>
-              <Route path="/">
+              <Route exact path="/">
                 <Login />
               </Route>
             </Switch>

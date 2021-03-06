@@ -1,6 +1,6 @@
 import { React, useEffect, useState, Fragment } from 'react'
 import styled from 'styled-components'
-import Chat from '../chats/Chat'
+import ChatHeader from '../chats/ChatHeader'
 // MaterialUI
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import AddIcon from '@material-ui/icons/Add';
@@ -92,9 +92,13 @@ cursor: pointer;
 function Sidebar(props, {  dialogOpen, close  }) {
   const [channels, setChannels] = useState([])
   const [channelName, setChannelName] = useState('')
+  const [channelDescription, setChannelDescription] = useState('')
   const [open, setOpen] = useState(false)
   const [inputChannelName, setInputChannelName] = useState('')
   const [inputChannelDescription, setInputChannelDescription] = useState('')
+
+  console.log(channelName)
+  console.log(channelDescription)
 
   const handleAddChannel = () => {
     const name = inputChannelName
@@ -206,6 +210,7 @@ function Sidebar(props, {  dialogOpen, close  }) {
               channels.map(item => (
                 <Channel id={item.id} onClick={(() => {
                   setChannelName(item.name)
+                  setChannelDescription(item.description)
                 })}>
                   # {item.name}
                 </Channel>
@@ -215,7 +220,7 @@ function Sidebar(props, {  dialogOpen, close  }) {
 
         </ChannelsContainer>
       </Container>
-      <Chat name={channelName} />
+      <ChatHeader name={channelName} description={channelDescription} />
     </Fragment>
   )
 }

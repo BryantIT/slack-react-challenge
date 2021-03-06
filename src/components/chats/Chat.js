@@ -1,5 +1,7 @@
 import { React } from 'react'
 import styled from 'styled-components'
+// Components
+import ChatHeader from './ChatHeader'
 
 // Styling
 const Container = styled.div`
@@ -19,35 +21,16 @@ const MessageContainer = styled.div`
 const ChatInput = styled.div`
 
 `
-const Channel = styled.div`
-
-`
 const ChannelDetails = styled.div`
 
 `
-const ChannelName = styled.div`
-  font-weight: 700;
-`
-const ChannelInfo = styled.div`
-  font-weight: 400;
-  color: #606060;
-  font-size: 13px;
-  margin-top: 8px;
-`
 
-function Chat(channelName) {
+function Chat() {
   // Component
   return (
     <Container>
       <Header>
-        <Channel>
-          <ChannelName>
-            {channelName.name}
-          </ChannelName>
-          <ChannelInfo>
-
-          </ChannelInfo>
-        </Channel>
+        <ChatHeader />
         <ChannelDetails>
 
         </ChannelDetails>
