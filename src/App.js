@@ -1,13 +1,15 @@
 import { React, useEffect, useState } from 'react'
 // Components
-import Chat from "./components/chats/Chat";
-import Login from "./components/login/Login";
-import Header from "./components/header/Header";
-import Sidebar from "./components/sidebar/Sidebar";
+import Workspace from './Workspace'
+import Chat from './components/chats/Chat';
+import Login from './components/login/Login';
+import Header from './components/header/Header';
+import Sidebar from './components/sidebar/Sidebar';
+import Home from './components/home/Home'
 // Packages
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import styled from "styled-components";
-import "./App.css";
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import styled from 'styled-components';
+import './App.css';
 // Firebase
 import db from './firebase'
 
@@ -47,17 +49,14 @@ function App() {
   return (
     <div className="App">
       <Router>
-        <Container>
-          <Header />
-          <Main>
-            <Sidebar channels={channels} />
             <Switch>
               <Route exact path="/">
-                <Login />
+                <Home />
+              </Route>
+              <Route exact path="/workspace">
+                <Workspace channels={channels} />
               </Route>
             </Switch>
-          </Main>
-        </Container>
       </Router>
     </div>
   );
